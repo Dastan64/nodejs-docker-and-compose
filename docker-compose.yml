@@ -1,0 +1,45 @@
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+    ports:
+      - "8081:80"
+    networks:
+      - internet
+    restart: on-failure
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "4000:4000"
+    networks:
+      - internal-network
+      - internet
+    depends_on:
+      - database
+    restart: on-failure
+
+  database:
+    container_name: postgres
+    image: "postgres:12"
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    networks:
+      - internal-network
+    restart: on-failure
+    volumes:
+      - ./pg-data:${POSTGRES_PGDATA}
+
+networks:
+  internal-network:
+    driver: bridge
+    internal: true
+  internet:
+    driver: bridge
