@@ -30,7 +30,6 @@ import { Wishlist } from './wishlists/entities/wishlist.entity';
         port: configService.get('POSTGRES_PORT'),
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
-        schema: 'nest_project',
         database: configService.get('POSTGRES_DB'),
         entities: [User, Wish, Offer, Wishlist],
         synchronize: true,

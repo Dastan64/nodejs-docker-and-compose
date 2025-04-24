@@ -1,6 +1,6 @@
 services:
   frontend:
-    container_name: frontend
+    container_name: kupipodariday-frontend
     build:
       context: ./frontend
     ports:
@@ -10,13 +10,13 @@ services:
     restart: on-failure
 
   backend:
-    container_name: backend
+    container_name: kupipodariday-backend
     build:
       context: ./backend
     env_file:
       - ./backend/.env
     ports:
-      - "4000:4000"
+      - "4000:3000"
     networks:
       - internal-network
       - internet
@@ -25,17 +25,17 @@ services:
     restart: on-failure
 
   database:
-    container_name: postgres
-    image: "postgres:17"
+    container_name: kupipodariday-postgres
+    image: "postgres:latest"
     env_file:
       - ./backend/.env
     environment:
-      POSTGRES_PGDATA: /var/lib/postgresql/data/pgdata
+      PGDATA: ${PGDATA}
     networks:
       - internal-network
     restart: on-failure
     volumes:
-      - ./pg-data:${POSTGRES_PGDATA}
+      - ./pg-data:${PGDATA}
 
 networks:
   internal-network:
